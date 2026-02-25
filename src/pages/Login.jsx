@@ -64,7 +64,7 @@ const Login = ({ onLogin }) => {
                     </div>
 
                     <Button variant="dark-blue" fullWidth>
-                        🎬 Continuar como invitado
+                        Continuar como invitado
                     </Button>
                 </form>
 

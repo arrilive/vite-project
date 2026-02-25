@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Button from '../components/Button'
 
 /* ── Data ────────────────────────────────── */
@@ -7,6 +7,7 @@ const TABS = [
     { id: 'membresia', label: 'Membresía' },
     { id: 'preventas', label: 'Preventas' },
     { id: 'formatos', label: 'Formatos especiales' },
+    { id: 'noticias', label: 'Noticias' },
 ]
 
 const PROMOCIONES = [
@@ -205,6 +206,64 @@ const FormatosTab = () => (
     </div>
 )
 
+const NoticiasTab = () => {
+    const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        const mockPosts = [
+            { id: 1, title: 'CineMax abre nueva sala IMAX en Mérida', body: 'La nueva sala contará con pantalla de 20 metros y sistema de audio Dolby Atmos de 12 canales.' },
+            { id: 2, title: 'Thunderbolts rompe récord de preventas', body: 'El nuevo film de Marvel agotó sus preventas en menos de 48 horas en todas las sucursales.' },
+            { id: 3, title: 'Martes de cine 2×1 se extiende a domingos', body: 'A partir de marzo, la promoción 2×1 también aplicará todos los domingos antes de las 3 PM.' },
+            { id: 4, title: 'Nueva app CineMax disponible en iOS y Android', body: 'Descarga la app y compra tus boletos sin filas. Disponible gratis en ambas tiendas.' },
+            { id: 5, title: 'Lilo & Stitch: preventa agotada en 6 horas', body: 'El remake live-action de Disney superó todas las expectativas con una demanda récord.' },
+            { id: 6, title: 'Sala VIP estrena menú de chef invitado', body: 'Cada mes un chef diferente diseña el menú exclusivo para los asistentes a la Sala VIP.' },
+        ]
+
+        setTimeout(() => {
+            setPosts(mockPosts)
+            setLoading(false)
+        }, 800)
+    }, [])
+
+    if (loading) return (
+        <div className="tab-content" style={{ textAlign: 'center', padding: '48px 0', color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem' }}>
+            Cargando noticias...
+        </div>
+    )
+
+    if (error) return (
+        <div className="tab-content" style={{ textAlign: 'center', padding: '48px 0', color: '#e74c3c', fontSize: '0.9rem' }}>
+            ⚠️ {error}
+        </div>
+    )
+
+    return (
+        <div className="tab-content">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+                {posts.map(post => (
+                    <div key={post.id} style={{
+                        background: 'rgba(255,255,255,0.04)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: 12, padding: 20
+                    }}>
+                        <h3 style={{
+                            fontSize: '0.9rem', fontWeight: 700, color: '#fff',
+                            textTransform: 'capitalize', marginBottom: 8, lineHeight: 1.4
+                        }}>
+                            {post.title}
+                        </h3>
+                        <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.6 }}>
+                            {post.body.length > 120 ? post.body.slice(0, 120) + '…' : post.body}
+                        </p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}
+
 /* ── Main page ───────────────────────────── */
 const Otros = () => {
     const [activeTab, setActiveTab] = useState('promociones')
@@ -215,6 +274,7 @@ const Otros = () => {
             case 'membresia': return <MembresiaTab />
             case 'preventas': return <PreventasTab />
             case 'formatos': return <FormatosTab />
+            case 'noticias': return <NoticiasTab />
             default: return <PromocionesTab />
         }
     }
