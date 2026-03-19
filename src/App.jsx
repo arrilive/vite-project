@@ -1,42 +1,33 @@
-import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar'
-import Login from './pages/Login'
+import Footer from './components/Footer'
+import Home from './pages/Home'
 import Cartelera from './pages/Cartelera'
 import Alimentos from './pages/Alimentos'
-import Otros from './pages/Otros'
+import Promos from './pages/Promos'
+import Garantia from './pages/Garantia'
+import QueCine from './pages/QueCine'
+import Festivales from './pages/Festivales'
+import DetallePelicula from './pages/DetallePelicula'
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [currentPage, setCurrentPage] = useState('cartelera')
-
-  if (!isLoggedIn) {
-    return <Login onLogin={() => setIsLoggedIn(true)} />
-  }
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'cartelera':
-        return <Cartelera />
-      case 'alimentos':
-        return <Alimentos />
-      case 'otros':
-        return <Otros />
-      default:
-        return <Cartelera />
-    }
-  }
-
   return (
     <div className="app-layout">
-      <Navbar
-        currentPage={currentPage}
-        onNavigate={setCurrentPage}
-        onLogout={() => setIsLoggedIn(false)}
-      />
+      <Navbar />
       <main className="page-content">
-        {renderPage()}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/cartelera" element={<Cartelera />} />
+          <Route path="/alimentos" element={<Alimentos />} />
+          <Route path="/promos" element={<Promos />} />
+          <Route path="/garantia" element={<Garantia />} />
+          <Route path="/que-cine" element={<QueCine />} />
+          <Route path="/festivales" element={<Festivales />} />
+          <Route path="/pelicula/:id" element={<DetallePelicula />} />
+        </Routes>
       </main>
+      <Footer />
     </div>
   )
 }

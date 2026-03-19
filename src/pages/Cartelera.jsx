@@ -1,7 +1,6 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import MovieCard from '../components/MovieCard'
-import Dropdown from '../components/Dropdown'
-import Button from '../components/Button'
 
 const MOVIES = [
   {
@@ -56,144 +55,10 @@ const GENRES = [
   { value: 'Aventura', label: 'Aventura' },
 ]
 
-/* ── Modal de compra ─────────────────────── */
-const BuyModal = ({ movie, onClose }) => {
-  const [form, setForm] = useState({ nombre: '', fecha: '', cantidad: '1' })
-  const [submitted, setSubmitted] = useState(false)
-
-  // onChange controlado
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
-  }
-
-  // onSubmit requerido
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setSubmitted(true)
-  }
-
-  const inputStyle = {
-    padding: '12px 14px', background: 'rgba(255,255,255,0.08)',
-    border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8,
-    color: '#fff', fontSize: '0.9rem', fontFamily: 'inherit',
-    outline: 'none', width: '100%'
-  }
-
-  return (
-    <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      zIndex: 1000, padding: 24
-    }}>
-      <div style={{
-        background: '#08285B', border: '1px solid rgba(255,255,255,0.15)',
-        borderRadius: 20, padding: 36, width: '100%', maxWidth: 440,
-        boxShadow: '0 24px 64px rgba(0,0,0,0.5)'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff' }}>
-            🎟️ Comprar boletos
-          </h2>
-          <button onClick={onClose} style={{
-            background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%',
-            width: 32, height: 32, color: '#fff', cursor: 'pointer', fontSize: '1rem'
-          }}>✕</button>
-        </div>
-
-        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', marginBottom: 24 }}>
-          {movie.title} · ⭐ {movie.score}
-        </p>
-
-        {!submitted ? (
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
-                Nombre completo
-              </label>
-              <input
-                name="nombre"
-                type="text"
-                required
-                placeholder="Tu nombre"
-                value={form.nombre}
-                onChange={handleChange}   // onChange ✅
-                style={inputStyle}
-              />
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
-                Fecha y función
-              </label>
-              <input
-                name="fecha"
-                type="datetime-local"
-                required
-                value={form.fecha}
-                onChange={handleChange}   // onChange ✅
-                style={inputStyle}
-              />
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>
-                Cantidad de boletos
-              </label>
-              <select
-                name="cantidad"
-                value={form.cantidad}
-                onChange={handleChange}   // onChange ✅
-                style={inputStyle}
-              >
-                {[1, 2, 3, 4, 5, 6].map(n => (
-                  <option key={n} value={n} style={{ background: '#08285B' }}>{n} boleto{n > 1 ? 's' : ''}</option>
-                ))}
-              </select>
-            </div>
-
-            <div style={{ marginTop: 8, display: 'flex', gap: 10 }}>
-              <Button variant="blue" fullWidth>Confirmar compra</Button>
-            </div>
-          </form>
-        ) : (
-          /* Confirmación tras onSubmit */
-          <div style={{
-            background: 'rgba(0,204,106,0.1)', border: '1px solid rgba(0,204,106,0.3)',
-            borderRadius: 12, padding: 24, textAlign: 'center'
-          }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>✅</div>
-            <h3 style={{ color: '#00CC6A', fontWeight: 800, marginBottom: 16 }}>¡Compra confirmada!</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, textAlign: 'left' }}>
-              {[
-                ['Película', movie.title],
-                ['Nombre', form.nombre],
-                ['Función', new Date(form.fecha).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' })],
-                ['Boletos', form.cantidad],
-                ['Total', `$${(movie.score > 8 ? 140 : 110) * parseInt(form.cantidad)} MXN`],
-              ].map(([label, val]) => (
-                <div key={label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                  <span style={{ color: 'rgba(255,255,255,0.5)' }}>{label}</span>
-                  <span style={{ color: '#fff', fontWeight: 600 }}>{val}</span>
-                </div>
-              ))}
-            </div>
-            <div style={{ marginTop: 20 }}>
-              <Button variant="dark-blue" fullWidth onClick={onClose}>Cerrar</Button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-/* ── Cartelera ───────────────────────────── */
 const Cartelera = () => {
   const [activeFilter, setActiveFilter] = useState('all')
   const [sortValue, setSortValue] = useState('default')
-  const [favorites, setFavorites] = useState(new Set())       // interacción 1 ✅
-  const [selectedMovie, setSelectedMovie] = useState(null)    // para modal
+  const [favorites, setFavorites] = useState(new Set())
 
   const toggleFavorite = (id) => {
     setFavorites(prev => {
@@ -215,69 +80,56 @@ const Cartelera = () => {
       <div className="page-header">
         <p className="page-header__eyebrow">En cartelera</p>
         <h1 className="page-header__title">Películas disponibles</h1>
-        <p className="page-header__subtitle">
-          Selecciona tu película favorita y compra tus boletos
-        </p>
+        <p className="page-header__subtitle">Selecciona tu película favorita y compra tus boletos</p>
       </div>
 
-      {/* Contador de favoritos */}
       {favorites.size > 0 && (
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: 8,
-          background: 'rgba(231,76,60,0.15)', border: '1px solid rgba(231,76,60,0.3)',
-          borderRadius: 20, padding: '6px 16px', marginBottom: 24,
-          fontSize: '0.82rem', color: '#e74c3c', fontWeight: 600
-        }}>
+        <div className="favorites-banner">
           ❤️ {favorites.size} película{favorites.size > 1 ? 's' : ''} en favoritos
         </div>
       )}
 
       <div className="cartelera-filters">
-        {GENRES.map(g => (
-          <button
-            key={g.value}
-            className={`filter-chip ${activeFilter === g.value ? 'active' : ''}`}
-            onClick={() => setActiveFilter(g.value)}
-          >
-            {g.label}
-          </button>
-        ))}
-        <div style={{ marginLeft: 'auto' }}>
-          <Dropdown
-            label="Ordenar por"
-            options={[
-              { value: 'default', label: 'Por defecto' },
-              { value: 'rating', label: 'Mejor calificación' },
-              { value: 'title', label: 'Título A-Z' },
-            ]}
-            value={sortValue}
-            onChange={setSortValue}
-          />
+        <div className="filter-chips">
+          {GENRES.map(g => (
+            <button
+              key={g.value}
+              className={`filter-chip${activeFilter === g.value ? ' active' : ''}`}
+              onClick={() => setActiveFilter(g.value)}
+            >
+              {g.label}
+            </button>
+          ))}
         </div>
+        <select
+          className="sort-select"
+          value={sortValue}
+          onChange={e => setSortValue(e.target.value)}
+        >
+          <option value="default">Por defecto</option>
+          <option value="rating">Mejor calificación</option>
+          <option value="title">Título A-Z</option>
+        </select>
       </div>
 
       {sorted.length === 0 ? (
         <div className="empty-state">
-          <div className="empty-state__label">Sin resultados</div>
+          <span className="empty-state__icon">🎬</span>
           <p className="empty-state__text">No hay películas en esta categoría</p>
         </div>
       ) : (
         <div className="movies-grid">
           {sorted.map(movie => (
-            <MovieCard
-              key={movie.id}
-              {...movie}
-              isFavorite={favorites.has(movie.id)}
-              onToggleFavorite={() => toggleFavorite(movie.id)}
-              onViewSchedule={() => setSelectedMovie(movie)}
-            />
+            <Link key={movie.id} to={`/pelicula/${movie.id}`} style={{ textDecoration: 'none' }}>
+              <MovieCard
+                {...movie}
+                isFavorite={favorites.has(movie.id)}
+                onToggleFavorite={(e) => { e.preventDefault(); toggleFavorite(movie.id) }}
+                onViewSchedule={undefined}
+              />
+            </Link>
           ))}
         </div>
-      )}
-
-      {/* Modal de compra */}
-      {selectedMovie && (
-        <BuyModal movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
       )}
     </div>
   )
