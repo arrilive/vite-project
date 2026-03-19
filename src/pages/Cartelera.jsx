@@ -120,14 +120,13 @@ const Cartelera = () => {
       ) : (
         <div className="movies-grid">
           {sorted.map(movie => (
-            <Link key={movie.id} to={`/pelicula/${movie.id}`} style={{ textDecoration: 'none' }}>
+            <div key={movie.id} className="movie-card-container">
               <MovieCard
                 {...movie}
                 isFavorite={favorites.has(movie.id)}
-                onToggleFavorite={(e) => { e.preventDefault(); toggleFavorite(movie.id) }}
-                onViewSchedule={undefined}
+                onToggleFavorite={() => toggleFavorite(movie.id)}
               />
-            </Link>
+            </div>
           ))}
         </div>
       )}

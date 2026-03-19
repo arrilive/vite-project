@@ -4,10 +4,9 @@ import { NavLink, Link } from 'react-router-dom'
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const [peliculasOpen, setPeliculasOpen] = useState(false)
-  const [mobilePeliculasOpen, setMobilePeliculasOpen] = useState(false)
   const dropdownRef = useRef(null)
 
-  // Close dropdown when clicking outside
+  // Cierra el dropdown al hacer clic fuera (desktop)
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -23,6 +22,7 @@ const Navbar = () => {
     { to: '/cartelera', label: 'Cartelera' },
     { to: '/alimentos', label: 'Alimentos' },
     { to: '/promos', label: 'Promos' },
+    { to: '/otros', label: 'Otros' },
   ]
 
   const peliculasSubItems = [
@@ -31,31 +31,24 @@ const Navbar = () => {
     { to: '/festivales', label: 'Festivales' },
   ]
 
-  const getNavLinkClass = ({ isActive }) =>
-    `navbar__nav-link${isActive ? ' active' : ''}`
-
   return (
     <nav className="navbar">
       {/* Logo */}
       <Link to="/" className="navbar__logo">
-        <div className="navbar__logo-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M7 4v16M17 4v16M3 8h4m10 0h4M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" stroke="white" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </div>
+        <div className="navbar__logo-icon">C</div>
         <span className="navbar__logo-text">
           Cine<span>Max</span>
         </span>
       </Link>
 
-      {/* Desktop Nav */}
+      {/* Navegación Desktop */}
       <ul className="navbar__nav">
         {navItems.map((item) => (
           <li key={item.to} className="navbar__nav-item">
             <NavLink
               to={item.to}
               end={item.end}
-              className={getNavLinkClass}
+              className="navbar__nav-link"
               onClick={() => setMenuOpen(false)}
             >
               {item.label}
@@ -63,7 +56,7 @@ const Navbar = () => {
           </li>
         ))}
 
-        {/* Películas dropdown - hover on desktop */}
+        {/* Dropdown Películas */}
         <li
           className="navbar__nav-item"
           ref={dropdownRef}
@@ -71,22 +64,19 @@ const Navbar = () => {
           onMouseLeave={() => setPeliculasOpen(false)}
         >
           <button
-            className={`navbar__nav-link navbar__dropdown-trigger${peliculasOpen ? ' active' : ''}`}
-            onClick={() => setPeliculasOpen((p) => !p)}
-            aria-expanded={peliculasOpen}
+            className={`navbar__nav-link navbar__dropdown-trigger ${peliculasOpen ? 'active' : ''}`}
+            onClick={() => setPeliculasOpen(!peliculasOpen)}
           >
-            Películas
-            <span className={`navbar__arrow${peliculasOpen ? ' open' : ''}`}>▾</span>
+            Películas ▾
           </button>
+          
           {peliculasOpen && (
             <div className="navbar__dropdown">
               {peliculasSubItems.map((sub) => (
                 <NavLink
                   key={sub.to}
                   to={sub.to}
-                  className={({ isActive }) =>
-                    `navbar__dropdown-item${isActive ? ' active' : ''}`
-                  }
+                  className="navbar__dropdown-item"
                   onClick={() => setPeliculasOpen(false)}
                 >
                   {sub.label}
@@ -97,25 +87,24 @@ const Navbar = () => {
         </li>
       </ul>
 
-      {/* Desktop actions */}
       <div className="navbar__actions">
-        <Link to="/promos" className="navbar__promo-badge">
-          🎟️ Promos
+        <Link to="/login" className="btn btn--outline" style={{ padding: '7px 16px', fontSize: '0.8rem' }}>
+          Login
         </Link>
       </div>
 
-      {/* Hamburger */}
+      {/* Hamburguesa Mobile */}
       <button
-        className={`navbar__hamburger${menuOpen ? ' open' : ''}`}
+        className={`navbar__hamburger ${menuOpen ? 'open' : ''}`}
         aria-label="Menú"
-        onClick={() => setMenuOpen((p) => !p)}
+        onClick={() => setMenuOpen(!menuOpen)}
       >
         <span />
         <span />
         <span />
       </button>
 
-      {/* Mobile menu */}
+      {/* Menú Mobile */}
       {menuOpen && (
         <div className="navbar__mobile-menu">
           {navItems.map((item) => (
@@ -123,38 +112,24 @@ const Navbar = () => {
               key={item.to}
               to={item.to}
               end={item.end}
-              className={({ isActive }) =>
-                `navbar__mobile-link${isActive ? ' active' : ''}`
-              }
+              className="navbar__mobile-link"
               onClick={() => setMenuOpen(false)}
             >
               {item.label}
             </NavLink>
           ))}
-
-          {/* Mobile Películas accordion */}
-          <button
-            className={`navbar__mobile-link navbar__mobile-accordion${mobilePeliculasOpen ? ' active' : ''}`}
-            onClick={() => setMobilePeliculasOpen((p) => !p)}
-          >
-            Películas <span className={`navbar__arrow${mobilePeliculasOpen ? ' open' : ''}`}>▾</span>
-          </button>
-          {mobilePeliculasOpen && (
-            <div className="navbar__mobile-subitems">
-              {peliculasSubItems.map((sub) => (
-                <NavLink
-                  key={sub.to}
-                  to={sub.to}
-                  className={({ isActive }) =>
-                    `navbar__mobile-sublink${isActive ? ' active' : ''}`
-                  }
-                  onClick={() => { setMenuOpen(false); setMobilePeliculasOpen(false) }}
-                >
-                  {sub.label}
-                </NavLink>
-              ))}
-            </div>
-          )}
+          
+          <div className="navbar__mobile-divider">Películas</div>
+          {peliculasSubItems.map((sub) => (
+            <NavLink
+              key={sub.to}
+              to={sub.to}
+              className="navbar__mobile-link"
+              onClick={() => setMenuOpen(false)}
+            >
+              {sub.label}
+            </NavLink>
+          ))}
         </div>
       )}
     </nav>

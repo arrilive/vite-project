@@ -10,6 +10,8 @@ import Garantia from './pages/Garantia'
 import QueCine from './pages/QueCine'
 import Festivales from './pages/Festivales'
 import DetallePelicula from './pages/DetallePelicula'
+import Otros from './pages/Otros'
+import Login from './pages/Login'
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path="/que-cine" element={<QueCine />} />
           <Route path="/festivales" element={<Festivales />} />
           <Route path="/pelicula/:id" element={<DetallePelicula />} />
+          <Route path="/otros" element={<Otros />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </main>
       <Footer />

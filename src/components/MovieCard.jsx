@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const MovieCard = ({ id, title, rating, genre, posterUrl, score, isFavorite, onToggleFavorite }) => {
+  const navigate = useNavigate()
+
+  const handleCardClick = () => {
+    navigate(`/pelicula/${id}`)
+  }
+
   return (
-    <div className="movie-card">
+    <div className="movie-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className="movie-card__poster-wrap">
         <img
           src={posterUrl}
@@ -14,9 +20,7 @@ const MovieCard = ({ id, title, rating, genre, posterUrl, score, isFavorite, onT
           }}
         />
         <div className="movie-card__overlay">
-          <Link to={`/pelicula/${id}`} className="movie-card__view-btn">
-            Ver detalle
-          </Link>
+          <span className="movie-card__view-btn">Ver detalle</span>
         </div>
         
         {rating && <span className="movie-card__rating-badge">{rating}</span>}
@@ -29,6 +33,7 @@ const MovieCard = ({ id, title, rating, genre, posterUrl, score, isFavorite, onT
         {/* Favorite button */}
         <button
           className={`movie-card__fav-btn ${isFavorite ? 'active' : ''}`}
+          style={{ color: isFavorite ? 'var(--color-danger)' : 'white' }}
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -41,11 +46,11 @@ const MovieCard = ({ id, title, rating, genre, posterUrl, score, isFavorite, onT
       </div>
 
       <div className="movie-card__body">
-        <span className="movie-card__genre">{genre}</span>
+        <span className="movie-card__genre" style={{ color: 'var(--color-blue-accent)' }}>{genre}</span>
         <h3 className="movie-card__title">{title}</h3>
-        <Link to={`/pelicula/${id}`} className="movie-card__link">
+        <span className="movie-card__link">
           Comprar boletos →
-        </Link>
+        </span>
       </div>
     </div>
   )

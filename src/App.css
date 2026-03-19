@@ -41,6 +41,13 @@
   --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
   --glass: rgba(255, 255, 255, 0.08);
+
+  /* New surface and accent colors */
+  --color-surface-card: #0a3270;
+  --color-surface-hover: #0d3a7a;
+  --color-blue-accent: #0083FF;
+  --color-cart-total: #FFB800;
+  --color-danger: #e74c3c;
 }
 
 /* =============================================
@@ -207,7 +214,7 @@ ul {
 /* Dropdown */
 .navbar__dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   left: 0;
   background: var(--color-surface);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -218,6 +225,16 @@ ul {
   display: flex;
   flex-direction: column;
   animation: dropIn 0.2s ease;
+}
+
+/* Puente para evitar que se cierre al mover el mouse */
+.navbar__dropdown::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  right: 0;
+  height: 20px;
 }
 
 @keyframes dropIn {
@@ -766,7 +783,25 @@ ul {
   cursor: pointer;
 }
 
-.horario-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.horario-btn:hover, .horario-btn.active { 
+  border-color: var(--color-accent); 
+  color: var(--color-accent); 
+  background: rgba(255, 190, 6, 0.1);
+}
+
+.detalle__compra-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+  background: var(--color-surface-light);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.movie-card-container {
+  display: block;
+  width: 100%;
+}
 
 /* =============================================
    FOOTER

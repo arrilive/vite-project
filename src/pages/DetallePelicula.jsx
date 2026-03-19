@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
+import { useState } from 'react'
 
 const ALL_MOVIES = [
   {
@@ -56,6 +57,9 @@ const HORARIOS = ['11:00', '13:30', '16:00', '18:30', '21:00', '23:30']
 
 const DetallePelicula = () => {
   const { id } = useParams()
+  const [mostrarFormulario, setMostrarFormulario] = useState(false)
+  const [selectedHorario, setSelectedHorario] = useState(null)
+  const [boletos, setBoletos] = useState(1)
   const movie = ALL_MOVIES.find(m => m.id === parseInt(id))
 
   if (!movie) {
@@ -69,6 +73,14 @@ const DetallePelicula = () => {
         </Link>
       </div>
     )
+  }
+
+  const handleComprar = () => {
+    if (!selectedHorario) {
+      alert('Por favor selecciona un horario')
+      return
+    }
+    setMostrarFormulario(true)
   }
 
   return (
@@ -103,16 +115,50 @@ const DetallePelicula = () => {
 
       {/* Horarios y compra */}
       <div className="detalle__buy-section">
-        <h2 className="detalle__buy-title">Selecciona tu horario</h2>
-        <div className="detalle__horarios">
-          {HORARIOS.map(h => (
-            <button key={h} className="horario-btn">{h}</button>
-          ))}
-        </div>
-        <button className="btn btn--red btn--lg detalle__comprar">
-          🎟️ Comprar Boletos
-        </button>
-        <p className="detalle__price-note">Boleto general $110 MXN · Niños y mayores $85 MXN</p>
+        {!mostrarFormulario ? (
+          <>
+            <h2 className="detalle__buy-title">Selecciona tu horario</h2>
+            <div className="detalle__horarios">
+              {HORARIOS.map(h => (
+                <button
+                  key={h}
+                  className={`horario-btn ${selectedHorario === h ? 'active' : ''}`}
+                  onClick={() => setSelectedHorario(h)}
+                >
+                  {h}
+                </button>
+              ))}
+            </div>
+            <button className="btn btn--red btn--lg detalle__comprar" onClick={handleComprar}>
+              🎟️ Comprar Boletos
+            </button>
+            <p className="detalle__price-note">Boleto general $110 MXN · Niños y mayores $85 MXN</p>
+          </>
+        ) : (
+          <div className="detalle__compra-form">
+            <h2 className="detalle__buy-title">Confirmar Compra</h2>
+            <p>Película: <strong>{movie.title}</strong></p>
+            <p>Horario: <strong>{selectedHorario}</strong></p>
+            
+            <div className="form-group" style={{ margin: '20px 0' }}>
+              <label>Cantidad de boletos: </label>
+              <input 
+                type="number" 
+                min="1" 
+                value={boletos} 
+                onChange={(e) => setBoletos(e.target.value)}
+                style={{ background: 'var(--color-bg)', color: 'white', border: '1px solid #333', padding: '5px', width: '60px' }}
+              />
+            </div>
+            
+            <p style={{ fontSize: '1.2rem', margin: '20px 0' }}>Total: <strong>${boletos * 110} MXN</strong></p>
+            
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              <button className="btn btn--accent" onClick={() => alert('¡Compra realizada con éxito!')}>Pagar Ahora</button>
+              <button className="btn btn--outline-white" onClick={() => setMostrarFormulario(false)}>Cancelar</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

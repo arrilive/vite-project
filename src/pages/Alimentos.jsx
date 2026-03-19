@@ -67,7 +67,7 @@ const Alimentos = () => {
             🛒 <strong>{cartItems.length}</strong> producto{cartItems.length > 1 ? 's' : ''} seleccionado{cartItems.length > 1 ? 's' : ''}
           </div>
           <div className="cart-banner__total">
-            Total: <strong>${total} MXN</strong>
+            Total: <strong style={{ color: 'var(--color-cart-total)' }}>${total} MXN</strong>
           </div>
           <button className="btn btn--red btn--sm">Ordenar</button>
         </div>
