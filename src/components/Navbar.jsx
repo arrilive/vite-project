@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import { NAV_ITEMS, PELICULAS_SUB_ITEMS } from '../constants/navigation'
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -17,20 +18,6 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const navItems = [
-    { to: '/', label: 'Home', end: true },
-    { to: '/cartelera', label: 'Cartelera' },
-    { to: '/alimentos', label: 'Alimentos' },
-    { to: '/promos', label: 'Promos' },
-    { to: '/otros', label: 'Otros' },
-  ]
-
-  const peliculasSubItems = [
-    { to: '/garantia', label: 'Garantía Cinépolis' },
-    { to: '/que-cine', label: '+Que Cine' },
-    { to: '/festivales', label: 'Festivales' },
-  ]
-
   return (
     <nav className="navbar">
       {/* Logo */}
@@ -43,7 +30,7 @@ const Navbar = () => {
 
       {/* Navegación Desktop */}
       <ul className="navbar__nav">
-        {navItems.map((item) => (
+        {NAV_ITEMS.map((item) => (
           <li key={item.to} className="navbar__nav-item">
             <NavLink
               to={item.to}
@@ -69,10 +56,10 @@ const Navbar = () => {
           >
             Películas ▾
           </button>
-          
+
           {peliculasOpen && (
             <div className="navbar__dropdown">
-              {peliculasSubItems.map((sub) => (
+              {PELICULAS_SUB_ITEMS.map((sub) => (
                 <NavLink
                   key={sub.to}
                   to={sub.to}
@@ -107,7 +94,7 @@ const Navbar = () => {
       {/* Menú Mobile */}
       {menuOpen && (
         <div className="navbar__mobile-menu">
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -118,9 +105,9 @@ const Navbar = () => {
               {item.label}
             </NavLink>
           ))}
-          
+
           <div className="navbar__mobile-divider">Películas</div>
-          {peliculasSubItems.map((sub) => (
+          {PELICULAS_SUB_ITEMS.map((sub) => (
             <NavLink
               key={sub.to}
               to={sub.to}

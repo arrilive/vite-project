@@ -1,59 +1,6 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import MovieCard from '../components/MovieCard'
-
-const MOVIES = [
-  {
-    id: 1, title: 'Dune: Parte Dos', rating: 'PG-13', genre: 'Sci-Fi', score: '8.6',
-    description: 'Paul Atreides se une a los Fremen para vengar a su familia y dar forma a su destino en Arrakis.',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg',
-  },
-  {
-    id: 2, title: 'Kung Fu Panda 4', rating: 'PG', genre: 'Animación', score: '7.2',
-    description: 'Po debe entrenar a un nuevo guerrero dragón mientras enfrenta a una poderosa hechicera.',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/kDp1vUBnMpe8ak4rjgl3cLELqjU.jpg',
-  },
-  {
-    id: 3, title: 'Godzilla x Kong', rating: '13+', genre: 'Acción', score: '7.8',
-    description: 'Dos titanes se alían para enfrentar una amenaza colosal que surge desde el interior de la Tierra.',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/z1p34vh7dEOnLDmyCrlUVLuoDzd.jpg',
-  },
-  {
-    id: 4, title: 'The Batman', rating: '17+', genre: 'Acción', score: '7.9',
-    description: 'Batman investiga una serie de crímenes en Gotham perpetrados por un enigmático asesino.',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg',
-  },
-  {
-    id: 5, title: 'Oppenheimer', rating: '17+', genre: 'Drama', score: '8.9',
-    description: 'La historia del físico J. Robert Oppenheimer y el desarrollo de la bomba atómica.',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg',
-  },
-  {
-    id: 6, title: 'Spider-Man: No Way Home', rating: 'PG-13', genre: 'Superhéroes', score: '8.3',
-    description: 'Peter Parker pide al Doctor Strange un hechizo que sale mal, abriendo el multiverso.',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
-  },
-  {
-    id: 7, title: 'Avatar: El Camino del Agua', rating: 'PG-13', genre: 'Aventura', score: '7.6',
-    description: 'Jake Sully y Neytiri deben proteger a su familia y a los pueblos del agua de Pandora.',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg',
-  },
-  {
-    id: 8, title: 'Cars 3', rating: 'G', genre: 'Animación', score: '6.8',
-    description: 'Rayo McQueen regresa para demostrar que aún tiene lo necesario para competir al más alto nivel.',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/tMMe4zklkYGNnJcxPkFNfd5y3Su.jpg',
-  },
-]
-
-const GENRES = [
-  { value: 'all', label: 'Todos' },
-  { value: 'Acción', label: 'Acción' },
-  { value: 'Animación', label: 'Animación' },
-  { value: 'Drama', label: 'Drama' },
-  { value: 'Sci-Fi', label: 'Sci-Fi' },
-  { value: 'Superhéroes', label: 'Superhéroes' },
-  { value: 'Aventura', label: 'Aventura' },
-]
+import { MOVIES, GENRES } from '../data/movies'
 
 const Cartelera = () => {
   const [activeFilter, setActiveFilter] = useState('all')

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const MovieCard = ({ id, title, rating, genre, posterUrl, score, isFavorite, onToggleFavorite }) => {
   const navigate = useNavigate()
